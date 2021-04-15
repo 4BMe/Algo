@@ -40,35 +40,17 @@ public class BOJ_15961 {
 		}
 		answer = Math.max(answer, eat[c] == 0 ? cnt + 1 : cnt);
 
-		go(0, cnt);
+		for (int i = 0; i < n; i++) {
+			eat[sh[i]]--;
+			if (eat[sh[i]] == 0)
+				cnt--;
+			if (eat[sh[(i + k) % n]] == 0)
+				cnt++;
+			eat[sh[(i + k) % n]]++;
+			answer = Math.max(answer, eat[c] == 0 ? cnt + 1 : cnt);
+		}
+
 		System.out.println(answer);
-	}
-
-	static void go(int start, int cnt) {
-		answer = Math.max(answer, eat[c] == 0 ? cnt + 1 : cnt);
-
-		if (start >= n)
-			return;
-		eat[sh[start]]--;
-		if (eat[sh[start]] == 0)
-			cnt--;
-		if (eat[sh[(start + k) % n]] == 0)
-			cnt++;
-		eat[sh[(start + k) % n]]++;
-//				
-//		System.out.println();
-//		System.out.println(start + " " + (start + k) % n);
-//		for (int i = start + 1; i <= start + k; i++) {
-//			System.out.print(sh[i % n] + " ");
-//		}
-//		System.out.println();
-//		for (int i = start + 1; i <= start + k; i++) {
-//			System.out.print(eat[sh[i % n]] + " ");
-//		}
-//		System.out.println();
-//		System.out.println(" " + cnt + " " + eat[c]);
-
-		go(start + 1, cnt);
 	}
 
 	public static void main(String[] args) throws Exception {
