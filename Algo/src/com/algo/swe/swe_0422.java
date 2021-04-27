@@ -1,4 +1,4 @@
-package a;
+package com.algo.swe;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
