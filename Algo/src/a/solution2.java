@@ -2,18 +2,7 @@ package a;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
-
-class point {
-	int y, x;
-
-	point(int y, int x) {
-		this.y = y;
-		this.x = x;
-	}
-}
 
 public class solution2 {
 
@@ -22,7 +11,9 @@ public class solution2 {
 	static StringBuilder sb;
 	static int T;
 	static int y, x;
-	static int[][] map;
+	static int[][] map = new int[11][30];
+	static int[][] used = new int[11][30];
+	static int[][] memo = new int[9][1 << 24];
 
 	static void init() throws Exception {
 		st = new StringTokenizer(br.readLine());
@@ -33,21 +24,78 @@ public class solution2 {
 		for (int i = 0; i < y; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < x; j++)
-				map[i][j] = Integer.parseInt(br.readLine());
+				map[i][j] = Integer.parseInt(st.nextToken());
 		}
+
+		for (int i = 0; i < y; i++)
+			for (int j = 0; j < (1 << x); j++)
+				memo[y][x] = -1;
 	}
 
 	static void solve() {
-		List<point[]> poss = new ArrayList<point[]>();
-		for (int i = 0; i < y; i++) {
-			for (int j = 0; j < x; j++) {
-				if (i + 1 < y && j + 1 < x) {
-					if (map[i][j] == 0 && map[i][j + 1] == 0 && map[i + 1][j] == 0 && map[i + 1][j + 1] == 0)
-						poss.add(new point[] { new point(i, j), new point(i, j + 1), new point(i + 1, j),
-								new point(i + 1, j + 1) });
-				}
-			}
+		int ret = getMaxChipCnt(0);
+		sb.append(ret + "\n");
+	}
+
+	static void setNemo(int dy, int dx, int val) {
+		used[dy][dx] = used[dy][dx + 1] = used[dy + 1][dx] = used[dy + 1][dx + 1] = val;
+		if (val == 1)
+			used[dy][dx] = 2;
+	}
+
+	static boolean isClean(int dy, int dx) {
+		if (dx >= x - 1)
+			return false;
+		if (used[dy][dx] + used[dy][dx + 1] + used[dy + 1][dx] + used[dy + 1][dx + 1] > 0)
+			return false;
+		if (map[dy][dx] + map[dy][dx + 1] + map[dy + 1][dx] + map[dy + 1][dx + 1] > 0)
+			return false;
+		return true;
+	}
+
+	static int getMaxChipCnt(int stage) {
+		int dy = stage / x;
+		int dx = stage % x;
+		int max = 0;
+		int state = 0;
+		if (dy == y - 2 && dx == x - 1)
+			return 0;
+
+		//DP
+		if (dx == x - 1) {
+			state = getState(dy);
+			if (memo[dy][state] != -1)
+				return memo[dy][state];
 		}
+
+		// 네모 설치
+		if (isClean(dy, dx)) {
+			setNemo(dy, dx, 1);
+			int ret = getMaxChipCnt(stage + 1) + 1;
+			if (ret > max)
+				max = ret;
+			setNemo(dy, dx, 0);
+		}
+
+		int ret = getMaxChipCnt(stage + 1);
+		if (ret > max)
+			max = ret;
+
+		//DP
+		if (dx == x - 1)
+			memo[dy][state] = max;
+
+		return max;
+	}
+
+	private static int getState(int dy) {
+		int sum = 0;
+		for (int i = 0; i < x - 1; i++) {
+			sum <<= 1;
+			if (used[dy][i] == 2)
+				sum |= 0x1;
+		}
+		return sum;
 	}
 
 	public static void main(String[] args) throws Exception {
