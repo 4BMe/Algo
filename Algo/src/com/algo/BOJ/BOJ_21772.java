@@ -1,4 +1,4 @@
-package a;
+package com.algo.BOJ;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -42,13 +42,12 @@ public class BOJ_21772 {
 	}
 
 	static void solve() {
-		visited[now[0]][now[1]] = true;
 		dfs(now[0], now[1], 0, 0);
 		System.out.println(answer);
 	}
 
 	static void dfs(int y, int x, int time, int cnt) {
-		if (time > t) {
+		if (time >= t) {
 			answer = Math.max(answer, cnt);
 			return;
 		}
@@ -56,9 +55,8 @@ public class BOJ_21772 {
 		for (int i = 0; i < 4; i++) {
 			ny = y + dy[i];
 			nx = x + dx[i];
-			if (ny < 0 || ny >= r || nx < 0 || nx >= c || visited[ny][nx] || map[ny][nx] == '#')
+			if (ny < 0 || ny >= r || nx < 0 || nx >= c || map[ny][nx] == '#')
 				continue;
-			visited[ny][nx] = true;
 			if (map[ny][nx] == 'S') {
 				map[ny][nx] = '.';
 				dfs(ny, nx, time + 1, cnt + 1);
@@ -66,7 +64,6 @@ public class BOJ_21772 {
 			} else {
 				dfs(ny, nx, time + 1, cnt);
 			}
-			visited[ny][nx] = false;
 		}
 
 	}
