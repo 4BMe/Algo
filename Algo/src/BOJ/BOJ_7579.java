@@ -1,4 +1,4 @@
-package a;
+package BOJ;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -19,30 +19,39 @@ public class BOJ_7579 {
 		st = new StringTokenizer(br.readLine());
 		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
-		mem = new int[n];
-		cost = new int[n];
+		mem = new int[n + 1];
+		cost = new int[n + 1];
 
 		st = new StringTokenizer(br.readLine());
-		for (int i = 0; i < n; i++)
+		for (int i = 1; i <= n; i++)
 			mem[i] = Integer.parseInt(st.nextToken());
 
 		st = new StringTokenizer(br.readLine());
-		for (int i = 0; i < n; i++) {
+		for (int i = 1; i <= n; i++) {
 			cost[i] = Integer.parseInt(st.nextToken());
 			max += cost[i];
 		}
 
-		dp = new int[n][max + 1];
+		dp = new int[n + 1][max + 1];
 		ans = 987654321;
 	}
 
 	static void solve() {
-
-		for (int i = 0; i < n; i++) {
+		for (int i = 1; i <= n; i++) {
+			int m = mem[i];
+			int c = cost[i];
 			for (int j = 0; j <= max; j++) {
-				
+				if (j - c >= 0)
+					dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - c] + m);
+				dp[i][j] = Math.max(dp[i][j], dp[i - 1][j]);
 			}
 		}
+
+		for (int i = 0; i <= max; i++)
+			if (dp[n][i] >= m) {
+				System.out.println(i);
+				return;
+			}
 	}
 
 	public static void main(String[] args) throws Exception {
