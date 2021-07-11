@@ -15,7 +15,7 @@ public class BOJ_2169 {
 	static int INF = -100000005;
 	static int[] dy = { 0, 0, 1 };
 	static int[] dx = { 1, -1, 0 };
-	public static int dir[][] = {{0,1},{1,0},{0,-1}};
+	static int dirr[][] = { { 0, 1 }, { 1, 0 }, { 0, -1 } };
 	static boolean[][] visited;
 
 	static void init() throws Exception {
@@ -39,7 +39,7 @@ public class BOJ_2169 {
 	}
 
 	static void solve() {
-		System.out.println(dfs2(0, 0, 0));
+		System.out.println(dfs(0, 0, 0));
 	}
 
 	static int dfs(int y, int x, int dir) {
@@ -51,8 +51,8 @@ public class BOJ_2169 {
 		visited[y][x] = true;
 		int ans = INF;
 		for (int i = 0; i < 3; i++) {
-			int ny = y + dy[i];
-			int nx = x + dx[i];
+			int ny = y + dirr[i][0];
+			int nx = x + dirr[i][1];
 			if (ny < 0 || ny >= n || nx < 0 || nx >= m || visited[ny][nx])
 				continue;
 			ans = Math.max(ans, map[y][x] + dfs(ny, nx, i));
@@ -61,21 +61,6 @@ public class BOJ_2169 {
 		return dp[y][x][dir] = ans;
 	}
 
-	public static int dfs2(int y,int x,int direction){
-		if(y==n-1 && x ==m-1) return map[y][x];
-		if(dp[y][x][direction]!=-100000005) return dp[y][x][direction];
-		visited[y][x] = true;
-		int ans = -200000;
-		for(int i=0;i<3;i++){
-			int ny = y + dy[i];
-			int nx = x + dx[i];
-			if (ny < 0 || ny >= n || nx < 0 || nx >= m || visited[ny][nx]) continue;
-			ans = Math.max(ans, dfs(ny,nx,i) + map[y][x]);
-		}
-		visited[y][x] = false;
-		return dp[y][x][direction] = ans;
-	}
-	
 	public static void main(String[] args) throws Exception {
 
 		init();
