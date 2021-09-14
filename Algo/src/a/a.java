@@ -17,9 +17,12 @@ public class a {
 	}
 
 	public static void main(String[] args) throws Exception {
-
+		long beforeTime = System.currentTimeMillis();
 		init();
 		solve();
+		long afterTime = System.currentTimeMillis();
+		long secDiffTime = (afterTime - beforeTime) / 1000;
+		System.out.println("시간차이(m) : " + secDiffTime);
 	}
 
 }
