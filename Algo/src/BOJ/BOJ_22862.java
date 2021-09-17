@@ -46,13 +46,17 @@ public class BOJ_22862 {
 				ans = Math.max(ans, even);
 			} else {
 				odd++;
-				if (odd + 1 > k) {
-					if (num[start] % 2 == 0) {
-						even--;
-					} else {
-						odd--;
+				if (odd > k) {
+					while (true) {
+						if (num[start] % 2 == 0) {
+							even--;
+							start++;
+						} else {
+							odd--;
+							start++;
+							break;
+						}
 					}
-					start++;
 				}
 			}
 		}
