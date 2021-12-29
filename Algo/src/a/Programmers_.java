@@ -10,13 +10,13 @@ public class Programmers_ {
 	static StringTokenizer st;
 	static StringBuilder sb;
 
-	static boolean solve() {
+	static boolean solution() {
 
 		return false;
 	}
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(solve());
+		System.out.println(solution());
 	}
 
 }
